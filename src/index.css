@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 40 30% 96%;
+    --foreground: 200 30% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 200 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 30% 15%;
+
+    --primary: 210 72% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 25% 90%;
+    --secondary-foreground: 200 30% 20%;
+
+    --muted: 40 20% 93%;
+    --muted-foreground: 200 10% 45%;
+
+    --accent: 200 25% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 210 72% 35%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 40 25% 95%;
+    --sidebar-foreground: 200 30% 15%;
+    --sidebar-primary: 210 72% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 25% 90%;
+    --sidebar-accent-foreground: 200 30% 20%;
+    --sidebar-border: 40 15% 85%;
+    --sidebar-ring: 210 72% 35%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 200 30% 10%;
+    --foreground: 40 20% 95%;
+    --card: 200 30% 13%;
+    --card-foreground: 40 20% 95%;
+    --primary: 210 72% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 200 25% 18%;
+    --secondary-foreground: 40 20% 95%;
+    --muted: 200 25% 18%;
+    --muted-foreground: 200 15% 60%;
+    --accent: 200 25% 45%;
+    --accent-foreground: 0 0% 100%;
+    --border: 200 25% 22%;
+    --input: 200 25% 22%;
+    --ring: 210 72% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', sans-serif;
+  }
+}
+
+@layer components {
+  .gradient-hero {
+    background: linear-gradient(135deg, hsl(210 72% 35%) 0%, hsl(200 25% 38%) 100%);
+  }
+
+  .gradient-hero-soft {
+    background: linear-gradient(135deg, hsl(210 72% 35% / 0.08) 0%, hsl(200 25% 38% / 0.08) 100%);
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm;
+  }
+}
