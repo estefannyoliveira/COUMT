@@ -1,0 +1,227 @@
+// =============================================
+// COUMT - Schema do Banco de Dados (Prisma)
+// PostgreSQL
+// =============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================
+// USUÁRIOS E AUTENTICAÇÃO
+// =============================================
+
+enum TipoUsuario {
+  universitario
+  empresa
+}
+
+model Usuario {
+  id           String      @id @default(uuid())
+  email        String      @unique
+  senhaHash    String      @map("senha_hash")
+  tipo         TipoUsuario
+  nome         String
+  criadoEm    DateTime    @default(now()) @map("criado_em")
+  atualizadoEm DateTime   @updatedAt @map("atualizado_em")
+
+  // Relações
+  perfilUniversitario PerfilUniversitario?
+  perfilEmpresa       PerfilEmpresa?
+  notificacoes        Notificacao[]
+  mensagensEnviadas   Chat[]               @relation("remetente")
+
+  @@map("usuarios")
+}
+
+// =============================================
+// PERFIS
+// =============================================
+
+model PerfilUniversitario {
+  id             String    @id @default(uuid())
+  usuarioId     String    @unique @map("usuario_id")
+  celular        String?
+  dataNascimento DateTime? @map("data_nascimento")
+  genero         String?
+  cpf            String?   @unique
+  localizacao    String?
+  matricula      String?
+  curso          String?
+  instituicao    String?
+  bio            String?
+  fotoUrl       String?   @map("foto_url")
+  cvUrl         String?   @map("cv_url")
+
+  // Relações
+  usuario      Usuario       @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  candidaturas Candidatura[]
+
+  @@map("perfis_universitarios")
+}
+
+model PerfilEmpresa {
+  id          String  @id @default(uuid())
+  usuarioId  String  @unique @map("usuario_id")
+  cnpj        String? @unique
+  descricao   String?
+  logoUrl    String? @map("logo_url")
+  localizacao String?
+  website     String?
+  telefone    String?
+
+  // Relações
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  vagas   Vaga[]
+
+  @@map("perfis_empresas")
+}
+
+// =============================================
+// VAGAS
+// =============================================
+
+enum NivelVaga {
+  iniciante
+  intermediario
+  avancado
+}
+
+enum StatusVaga {
+  ativa
+  expirada
+  fechada
+}
+
+model Vaga {
+  id              String     @id @default(uuid())
+  empresaId      String     @map("empresa_id")
+  titulo          String
+  descricao       String
+  area            String
+  cursoDesejado  String     @map("curso_desejado")
+  localizacao     String
+  duracaoEstagio String     @map("duracao_estagio")
+  salario         Decimal?   @db.Decimal(10, 2)
+  nivel           NivelVaga  @default(iniciante)
+  dataPublicacao DateTime   @default(now()) @map("data_publicacao")
+  dataExpiracao  DateTime   @map("data_expiracao")
+  status          StatusVaga @default(ativa)
+
+  // Relações
+  empresa      PerfilEmpresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  candidaturas Candidatura[]
+  etapas       EtapaProcesso[]
+
+  @@map("vagas")
+}
+
+// =============================================
+// PROCESSO SELETIVO
+// =============================================
+
+enum TipoEtapa {
+  analise
+  entrevista
+  teste
+  aprovacao
+}
+
+model EtapaProcesso {
+  id          String    @id @default(uuid())
+  vagaId     String    @map("vaga_id")
+  numeroEtapa Int       @map("numero_etapa")
+  nomeEtapa  String    @map("nome_etapa")
+  tipo        TipoEtapa @default(analise)
+  descricao   String?
+  ordem       Int
+
+  // Relações
+  vaga                 Vaga          @relation(fields: [vagaId], references: [id], onDelete: Cascade)
+  candidaturasNaEtapa  Candidatura[] @relation("etapaAtual")
+
+  @@map("etapas_processo_seletivo")
+}
+
+// =============================================
+// CANDIDATURAS
+// =============================================
+
+enum StatusCandidatura {
+  inscrito
+  em_analise
+  entrevista
+  aprovado
+  rejeitado
+}
+
+model Candidatura {
+  id               String            @id @default(uuid())
+  vagaId          String            @map("vaga_id")
+  universitarioId String            @map("universitario_id")
+  dataCandidatura DateTime          @default(now()) @map("data_candidatura")
+  statusProcesso  StatusCandidatura @default(inscrito) @map("status_processo")
+  etapaAtualId   String?           @map("etapa_atual_id")
+  atualizadoEm   DateTime          @updatedAt @map("atualizado_em")
+
+  // Relações
+  vaga          Vaga                 @relation(fields: [vagaId], references: [id], onDelete: Cascade)
+  universitario PerfilUniversitario  @relation(fields: [universitarioId], references: [id], onDelete: Cascade)
+  etapaAtual   EtapaProcesso?       @relation("etapaAtual", fields: [etapaAtualId], references: [id])
+  mensagensChat Chat[]
+
+  @@unique([vagaId, universitarioId]) // RN08: candidatura única por vaga
+  @@map("candidaturas")
+}
+
+// =============================================
+// CHAT
+// =============================================
+
+model Chat {
+  id           String   @id @default(uuid())
+  candidaturaId String  @map("candidatura_id")
+  remetenteId  String   @map("remetente_id")
+  conteudo     String
+  dataEnvio   DateTime @default(now()) @map("data_envio")
+  lido         Boolean  @default(false)
+
+  // Relações
+  candidatura Candidatura @relation(fields: [candidaturaId], references: [id], onDelete: Cascade)
+  remetente   Usuario     @relation("remetente", fields: [remetenteId], references: [id], onDelete: Cascade)
+
+  @@map("chat")
+}
+
+// =============================================
+// NOTIFICAÇÕES
+// =============================================
+
+enum TipoNotificacao {
+  vaga_nova
+  etapa_proxima
+  aprovado
+  rejeitado
+  candidatura_recebida
+}
+
+model Notificacao {
+  id             String          @id @default(uuid())
+  usuarioId     String          @map("usuario_id")
+  tipo           TipoNotificacao
+  titulo         String
+  descricao      String
+  relacionadoAId String?        @map("relacionado_a_id")
+  dataCriacao   DateTime        @default(now()) @map("data_criacao")
+  lido           Boolean         @default(false)
+
+  // Relações
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("notificacoes")
+}
