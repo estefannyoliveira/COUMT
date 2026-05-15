@@ -4,128 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import studentImg from "@/assets/student-3d.png";
 
-// Flat-design SVG illustration of a university student — uses only the existing color palette
 const HeroIllustration = () => (
-  <div className="relative flex items-center justify-center w-full">
-    <svg
-      viewBox="0 0 420 460"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full max-w-xs md:max-w-sm lg:max-w-md h-auto"
-      aria-hidden="true"
-    >
-      {/* Ground shadow */}
-      <ellipse cx="210" cy="440" rx="140" ry="14" fill="hsl(210 72% 35% / 0.08)" />
+  <div className="relative flex items-center justify-center w-full min-h-[420px] md:min-h-[500px]">
+    {/* Círculo plataforma */}
+    <div className="absolute w-[380px] h-[380px] md:w-[440px] md:h-[440px] lg:w-[520px] lg:h-[520px] rounded-full bg-primary/8" />
+    {/* Anel externo */}
+    <div className="absolute w-[440px] h-[440px] md:w-[510px] md:h-[510px] lg:w-[600px] lg:h-[600px] rounded-full border border-primary/10" />
+    {/* Anel pontilhado */}
+    <div className="hero-ring-dashed absolute w-[340px] h-[340px] md:w-[395px] md:h-[395px] lg:w-[465px] lg:h-[465px] rounded-full" />
 
-      {/* Large background circle */}
-      <circle cx="210" cy="220" r="175" fill="hsl(210 72% 35% / 0.06)" />
-      <circle cx="210" cy="220" r="145" fill="hsl(210 72% 35% / 0.07)" />
+    {/* Dots flutuantes */}
+    <div className="absolute top-8 right-[14%] w-5 h-5 rounded-full bg-primary/25" />
+    <div className="absolute top-[22%] right-[4%] w-3 h-3 rounded-full bg-accent/30" />
+    <div className="absolute bottom-[18%] right-[7%] w-4 h-4 rounded-full bg-primary/20" />
+    <div className="absolute bottom-8 left-[17%] w-3.5 h-3.5 rounded-full bg-accent/25" />
+    <div className="absolute top-[45%] left-[3%] w-2.5 h-2.5 rounded-full bg-primary/30" />
 
-      {/* Torso / shirt */}
-      <rect x="148" y="268" width="124" height="148" rx="24" fill="hsl(210 72% 35%)" />
-
-      {/* Shirt collar V */}
-      <path d="M182 268 L210 302 L238 268" fill="hsl(200 25% 38%)" />
-
-      {/* Neck */}
-      <rect x="197" y="248" width="26" height="24" rx="8" fill="hsl(30 25% 82%)" />
-
-      {/* Head */}
-      <circle cx="210" cy="215" r="58" fill="hsl(30 25% 82%)" />
-
-      {/* Hair */}
-      <path
-        d="M155 208 Q158 162 210 156 Q262 152 266 208 Q258 170 210 168 Q162 168 155 208Z"
-        fill="hsl(20 30% 22%)"
-      />
-
-      {/* Left eye */}
-      <circle cx="192" cy="212" r="5.5" fill="hsl(200 30% 15%)" />
-      <circle cx="194" cy="210" r="2" fill="white" opacity="0.6" />
-
-      {/* Right eye */}
-      <circle cx="228" cy="212" r="5.5" fill="hsl(200 30% 15%)" />
-      <circle cx="230" cy="210" r="2" fill="white" opacity="0.6" />
-
-      {/* Smile */}
-      <path
-        d="M193 230 Q210 244 227 230"
-        stroke="hsl(200 30% 15%)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      {/* Mortarboard — brim */}
-      <rect x="166" y="168" width="88" height="14" rx="5" fill="hsl(210 72% 26%)" />
-      {/* Mortarboard — top */}
-      <rect x="182" y="146" width="56" height="24" rx="5" fill="hsl(210 72% 26%)" />
-      {/* Tassel string */}
-      <line x1="238" y1="158" x2="260" y2="180" stroke="hsl(38 92% 50%)" strokeWidth="3" strokeLinecap="round" />
-      {/* Tassel end */}
-      <circle cx="260" cy="185" r="6" fill="hsl(38 92% 50%)" />
-
-      {/* Left arm */}
-      <rect x="102" y="272" width="46" height="112" rx="23" fill="hsl(210 72% 35%)" />
-      {/* Left hand */}
-      <circle cx="125" cy="388" r="16" fill="hsl(30 25% 82%)" />
-
-      {/* Right arm */}
-      <rect x="272" y="272" width="46" height="112" rx="23" fill="hsl(210 72% 35%)" />
-      {/* Right hand */}
-      <circle cx="295" cy="388" r="16" fill="hsl(30 25% 82%)" />
-
-      {/* Book in left hand */}
-      <rect x="90" y="356" width="62" height="48" rx="6" fill="hsl(200 25% 38%)" />
-      <rect x="96" y="362" width="50" height="36" rx="3" fill="white" opacity="0.18" />
-      <line x1="121" y1="362" x2="121" y2="398" stroke="hsl(200 25% 38%)" strokeWidth="2.5" />
-      <rect x="100" y="368" width="18" height="3" rx="1.5" fill="white" opacity="0.5" />
-      <rect x="100" y="375" width="14" height="3" rx="1.5" fill="white" opacity="0.5" />
-      <rect x="100" y="382" width="16" height="3" rx="1.5" fill="white" opacity="0.5" />
-
-      {/* Diploma / scroll in right hand */}
-      <rect x="268" y="356" width="58" height="44" rx="10" fill="hsl(40 25% 92%)" />
-      <rect x="275" y="364" width="44" height="4" rx="2" fill="hsl(210 72% 35%)" opacity="0.45" />
-      <rect x="275" y="373" width="36" height="4" rx="2" fill="hsl(210 72% 35%)" opacity="0.45" />
-      <rect x="275" y="382" width="40" height="4" rx="2" fill="hsl(210 72% 35%)" opacity="0.45" />
-      {/* Diploma ribbon */}
-      <rect x="290" y="394" width="16" height="6" rx="3" fill="hsl(38 92% 50%)" />
-
-      {/* Floating stat card: vagas */}
-      <rect x="14" y="120" width="120" height="44" rx="12" fill="white" />
-      <rect x="14" y="120" width="120" height="44" rx="12" stroke="hsl(210 72% 35% / 0.15)" strokeWidth="1.5" />
-      <circle cx="36" cy="142" r="10" fill="hsl(210 72% 35% / 0.12)" />
-      <circle cx="36" cy="142" r="4" fill="hsl(210 72% 35%)" />
-      <rect x="52" y="134" width="68" height="7" rx="3.5" fill="hsl(200 30% 15%)" opacity="0.75" />
-      <rect x="52" y="146" width="50" height="6" rx="3" fill="hsl(200 10% 45%)" opacity="0.5" />
-
-      {/* Floating stat card: empresas */}
-      <rect x="286" y="80" width="120" height="44" rx="12" fill="white" />
-      <rect x="286" y="80" width="120" height="44" rx="12" stroke="hsl(200 25% 38% / 0.15)" strokeWidth="1.5" />
-      <circle cx="308" cy="102" r="10" fill="hsl(200 25% 38% / 0.12)" />
-      <circle cx="308" cy="102" r="4" fill="hsl(200 25% 38%)" />
-      <rect x="324" y="94" width="68" height="7" rx="3.5" fill="hsl(200 30% 15%)" opacity="0.75" />
-      <rect x="324" y="106" width="50" height="6" rx="3" fill="hsl(200 10% 45%)" opacity="0.5" />
-
-      {/* Floating check badge */}
-      <rect x="300" y="300" width="100" height="38" rx="10" fill="white" />
-      <rect x="300" y="300" width="100" height="38" rx="10" stroke="hsl(142 71% 45% / 0.2)" strokeWidth="1.5" />
-      <circle cx="320" cy="319" r="9" fill="hsl(142 71% 45% / 0.15)" />
-      <path d="M315 319 L318 323 L325 314" stroke="hsl(142 71% 45%)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="334" y="312" width="54" height="6" rx="3" fill="hsl(200 30% 15%)" opacity="0.7" />
-      <rect x="334" y="322" width="40" height="5" rx="2.5" fill="hsl(200 10% 45%)" opacity="0.5" />
-
-      {/* Decorative dots */}
-      <circle cx="72" cy="72" r="10" fill="hsl(210 72% 35% / 0.12)" />
-      <circle cx="355" cy="240" r="14" fill="hsl(200 25% 38% / 0.1)" />
-      <circle cx="48" cy="330" r="8" fill="hsl(210 72% 35% / 0.12)" />
-      <circle cx="370" cy="380" r="10" fill="hsl(38 92% 50% / 0.2)" />
-
-      {/* Star decorations */}
-      <path d="M350 50 L352.4 57.3 L360 57.3 L353.8 61.9 L356.2 69.3 L350 64.7 L343.8 69.3 L346.2 61.9 L340 57.3 L347.6 57.3Z" fill="hsl(38 92% 50%)" opacity="0.6" />
-      <path d="M65 180 L66.4 184.2 L70.8 184.2 L67.2 186.8 L68.6 191 L65 188.4 L61.4 191 L62.8 186.8 L59.2 184.2 L63.6 184.2Z" fill="hsl(210 72% 35%)" opacity="0.4" />
-    </svg>
+    {/* Imagem — ocupa toda a coluna */}
+    <img
+      src={studentImg}
+      alt="Estudante universitário com capelo de formatura"
+      className="relative z-10 w-full max-w-[360px] md:max-w-[460px] lg:max-w-[540px] h-auto drop-shadow-2xl"
+    />
   </div>
 );
 
@@ -142,19 +44,27 @@ const Home = () => {
   return (
     <div className="space-y-0">
       {/* ── HERO ── */}
-      <section className="bg-background relative overflow-hidden border-b border-border/40">
-        {/* Subtle dot pattern */}
-        <div
-          className="absolute inset-0 opacity-60"
-          style={{
-            backgroundImage:
-              "radial-gradient(hsl(var(--primary) / 0.12) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-        {/* Blue accent blob — top right */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary/6 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-accent/5 blur-2xl pointer-events-none" />
+      <section className="hero-bg relative overflow-hidden border-b border-border/40">
+        {/* Shapes decorativas — Opção C */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          {/* Círculo grande — canto superior direito */}
+          <circle cx="85%" cy="-5%" r="280" fill="hsl(var(--primary) / 0.06)" />
+          {/* Círculo médio — centro direita */}
+          <circle cx="92%" cy="60%" r="160" fill="hsl(var(--accent) / 0.07)" />
+          {/* Círculo pequeno — canto inferior esquerdo */}
+          <circle cx="8%" cy="110%" r="140" fill="hsl(var(--primary) / 0.05)" />
+          {/* Anéis decorativos */}
+          <circle cx="80%" cy="15%" r="90" stroke="hsl(var(--primary) / 0.1)" strokeWidth="1.5" fill="none" />
+          <circle cx="12%" cy="75%" r="55" stroke="hsl(var(--accent) / 0.12)" strokeWidth="1" fill="none" />
+          {/* Dot cluster — canto superior esquerdo */}
+          <circle cx="5%" cy="20%" r="3" fill="hsl(var(--primary) / 0.2)" />
+          <circle cx="8%" cy="15%" r="2" fill="hsl(var(--primary) / 0.15)" />
+          <circle cx="3%" cy="30%" r="2.5" fill="hsl(var(--accent) / 0.2)" />
+        </svg>
 
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-24 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
@@ -221,7 +131,7 @@ const Home = () => {
             </div>
 
             {/* RIGHT: illustration */}
-            <div className="order-1 md:order-2 flex justify-center md:justify-end">
+            <div className="order-1 md:order-2 flex items-center justify-center">
               <HeroIllustration />
             </div>
           </div>
