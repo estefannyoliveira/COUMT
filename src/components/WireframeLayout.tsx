@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import coumtLogo from "@/assets/coumt-logo.jpg";
+import coumtLogo from "@/assets/coumt-logo-new.png";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -28,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <img src={coumtLogo} alt="COUMT" className="h-9 w-auto" />
+            <img src={coumtLogo} alt="COUMT" className="h-11 w-auto mix-blend-screen" />
           </Link>
 
           {/* Desktop nav */}
@@ -73,6 +73,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
           {/* Mobile toggle */}
           <button
+            type="button"
             className="md:hidden p-2 rounded-md hover:bg-muted transition-colors"
             onClick={() => setMenuOpen(!menuOpen)}
           >
@@ -143,7 +144,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <img src={coumtLogo} alt="COUMT" className="h-8 w-auto" />
+                <img src={coumtLogo} alt="COUMT" className="h-10 w-auto mix-blend-screen" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Conectando universitários a oportunidades de estágio obrigatório.
