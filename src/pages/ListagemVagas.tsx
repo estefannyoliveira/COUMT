@@ -65,10 +65,13 @@ const ListagemVagas = () => {
             <Button type="submit"><Filter className="w-4 h-4 mr-2" /> Buscar</Button>
           </form>
           <div className="flex flex-wrap gap-3">
-            <Select value={curso} onValueChange={setCurso}>
+            <Select
+              value={curso || "all"}
+              onValueChange={(v) => setCurso(v === "all" ? "" : v)}
+            >
               <SelectTrigger className="w-[180px]"><SelectValue placeholder="Curso" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos os cursos</SelectItem>
+                <SelectItem value="all">Todos os cursos</SelectItem>
                 <SelectItem value="Engenharia Civil">Engenharia Civil</SelectItem>
                 <SelectItem value="Administração">Administração</SelectItem>
                 <SelectItem value="Psicologia">Psicologia</SelectItem>
@@ -77,10 +80,13 @@ const ListagemVagas = () => {
                 <SelectItem value="Sistemas de Informação">Sistemas de Informação</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={area} onValueChange={setArea}>
+            <Select
+              value={area || "all"}
+              onValueChange={(v) => setArea(v === "all" ? "" : v)}
+            >
               <SelectTrigger className="w-[180px]"><SelectValue placeholder="Área" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todas as áreas</SelectItem>
+                <SelectItem value="all">Todas as áreas</SelectItem>
                 <SelectItem value="Tecnologia da Informação">Tecnologia</SelectItem>
                 <SelectItem value="Dados e Analytics">Dados</SelectItem>
                 <SelectItem value="Engenharia">Engenharia</SelectItem>
@@ -89,10 +95,13 @@ const ListagemVagas = () => {
                 <SelectItem value="Jurídico">Jurídico</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={localizacao} onValueChange={setLocalizacao}>
+            <Select
+              value={localizacao || "all"}
+              onValueChange={(v) => setLocalizacao(v === "all" ? "" : v)}
+            >
               <SelectTrigger className="w-[180px]"><SelectValue placeholder="Localização" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Qualquer local</SelectItem>
+                <SelectItem value="all">Qualquer local</SelectItem>
                 <SelectItem value="Manaus">Manaus, AM</SelectItem>
                 <SelectItem value="São Paulo">São Paulo</SelectItem>
                 <SelectItem value="Rio de Janeiro">Rio de Janeiro</SelectItem>
