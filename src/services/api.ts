@@ -236,7 +236,7 @@ const MOCK_CANDIDATURAS: Candidatura[] = [
 const MOCK_PERFIL_UNI: PerfilUniversitario = {
   id: "p1",
   curso: "Engenharia Civil",
-  instituicao: "UEA — Universidade do Estado do Amazonas",
+  instituicao: "FAMETRO",
   matricula: "2022001234",
   celular: "(92) 99999-0001",
   localizacao: "Manaus, AM",
