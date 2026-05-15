@@ -260,10 +260,13 @@ export async function minhasVagas(req: AuthRequest, res: Response, next: NextFun
   }
 }
 
+const PESO_CURSO = 50;
+const PESO_LOCALIZACAO = 30;
+
 /**
  * GET /api/vagas/recomendacoes
  * Vagas recomendadas para o universitário logado (RN10, RN11)
- * Matching por: curso, área, localização
+ * Algoritmo de matching por pontuação: curso (50pts) + localização (30pts)
  */
 export async function recomendacoes(req: AuthRequest, res: Response, next: NextFunction) {
   try {
@@ -275,39 +278,46 @@ export async function recomendacoes(req: AuthRequest, res: Response, next: NextF
 
     const hoje = new Date();
 
-    // Busca vagas ativas priorizando: curso > localização
-    const vagas = await prisma.vaga.findMany({
-      where: {
-        status: "ativa",
-        dataExpiracao: { gte: hoje },
-        OR: [
-          ...(perfil.curso ? [{ cursoDesejado: { contains: perfil.curso, mode: "insensitive" as const } }] : []),
-          ...(perfil.localizacao ? [{ localizacao: { contains: perfil.localizacao, mode: "insensitive" as const } }] : []),
-        ],
-      },
-      take: 20,
-      orderBy: { dataPublicacao: "desc" },
+    const vagasAtivas = await prisma.vaga.findMany({
+      where: { status: "ativa", dataExpiracao: { gte: hoje } },
       include: {
         empresa: { include: { usuario: { select: { nome: true } } } },
         _count: { select: { candidaturas: true } },
       },
     });
 
-    // Se não encontrou vagas compatíveis, retorna as mais recentes
-    if (vagas.length === 0) {
-      const vagasRecentes = await prisma.vaga.findMany({
-        where: { status: "ativa", dataExpiracao: { gte: hoje } },
-        take: 10,
-        orderBy: { dataPublicacao: "desc" },
-        include: {
-          empresa: { include: { usuario: { select: { nome: true } } } },
-          _count: { select: { candidaturas: true } },
-        },
-      });
+    const normalizar = (s: string) => s.toLowerCase().trim();
+
+    const vagasCompatíveis = vagasAtivas
+      .map((vaga) => {
+        let pontuacao = 0;
+
+        // Critério 1: Compatibilidade de curso (50 pts)
+        if (perfil.curso && normalizar(vaga.cursoDesejado).includes(normalizar(perfil.curso))) {
+          pontuacao += PESO_CURSO;
+        }
+
+        // Critério 2: Compatibilidade de localização (30 pts)
+        if (perfil.localizacao && normalizar(vaga.localizacao).includes(normalizar(perfil.localizacao))) {
+          pontuacao += PESO_LOCALIZACAO;
+        }
+
+        return { vaga, pontuacao };
+      })
+      .filter(({ pontuacao }) => pontuacao > 0)
+      .sort((a, b) => b.pontuacao - a.pontuacao)
+      .slice(0, 20)
+      .map(({ vaga }) => vaga);
+
+    // Fallback: vagas mais recentes se nenhuma for compatível
+    if (vagasCompatíveis.length === 0) {
+      const vagasRecentes = vagasAtivas
+        .sort((a, b) => b.dataPublicacao.getTime() - a.dataPublicacao.getTime())
+        .slice(0, 10);
       return ok(res, vagasRecentes);
     }
 
-    return ok(res, vagas);
+    return ok(res, vagasCompatíveis);
   } catch (err) {
     next(err);
   }
