@@ -28,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border/50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <img src={coumtLogo} alt="COUMT" className="h-11 w-auto" />
+            <img src={coumtLogo} alt="COUMT" className="h-16 w-auto" />
           </Link>
 
           {/* Desktop nav */}
@@ -144,7 +144,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <img src={coumtLogo} alt="COUMT" className="h-10 w-auto" />
+                <img src={coumtLogo} alt="COUMT" className="h-14 w-auto" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Conectando universitários a oportunidades de estágio obrigatório.
